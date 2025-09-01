@@ -10,5 +10,6 @@ import "./index.css";
 // import App from "./ts_react/ref_ts";
 // import App from "./ts_react/props_with_children";
 // import App from "./ts_react/css_ts";
-import App from "./ts_react/eventhandler";
+// import App from "./ts_react/eventhandler";
+import App from "./debug_demo/debug_demo";
 createRoot(document.getElementById("root")!).render(<App />);
