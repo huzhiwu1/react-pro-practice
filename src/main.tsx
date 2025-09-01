@@ -11,5 +11,7 @@ import "./index.css";
 // import App from "./ts_react/props_with_children";
 // import App from "./ts_react/css_ts";
 // import App from "./ts_react/eventhandler";
-import App from "./debug_demo/debug_demo";
+// import App from "./debug_demo/debug_demo";
+// import App from "./control_component/input_change";
+import App from "./control_component/control_calendar";
 createRoot(document.getElementById("root")!).render(<App />);
