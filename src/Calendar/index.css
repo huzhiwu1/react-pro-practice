@@ -1,0 +1,31 @@
+.calendar {
+  width: 300px;
+  height: 250px;
+  border: 1px solid #aaa;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.calendar .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 40px;
+}
+.calendar .days {
+  display: flex;
+  flex-wrap: wrap;
+}
+.calendar .days .empty,
+.calendar .days .day {
+  width: calc(100% / 7);
+  line-height: 30px;
+  text-align: center;
+}
+
+.calendar .days .day:hover,
+.selected {
+  background-color: #ccc;
+  cursor: pointer;
+}

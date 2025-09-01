@@ -13,5 +13,6 @@ import "./index.css";
 // import App from "./ts_react/eventhandler";
 // import App from "./debug_demo/debug_demo";
 // import App from "./control_component/input_change";
-import App from "./control_component/control_calendar";
+// import App from "./demo/control_component/control_calendar";
+import App from "./Calendar";
 createRoot(document.getElementById("root")!).render(<App />);
