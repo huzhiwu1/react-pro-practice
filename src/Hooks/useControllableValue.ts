@@ -59,8 +59,11 @@ function useControllableValue<T>(
    * value: 外部传入的值
    * hook需要根据是否受控返回一个可以使用的值
    */
-  const mergedValue = value !== undefined ? value : stateValue;
+  const mergedValueRef = useRef(value !== undefined ? value : stateValue);
+  mergedValueRef.current = value !== undefined ? value : stateValue;
 
+  const isFunction = (value: unknown): value is Function =>
+    typeof value === "function";
   /**
    * 当状态发生变化时
    * 受控组件，需要调用onChange
@@ -68,11 +71,14 @@ function useControllableValue<T>(
    */
   const handleChange = useCallback(
     (nextValue: T) => {
+      const value = isFunction(nextValue)
+        ? nextValue(mergedValueRef.current)
+        : nextValue;
       // 非受控
       if (value === undefined) {
-        setStateValue(nextValue);
+        setStateValue(value);
       }
-      (props as any)[trigger]?.(nextValue);
+      (props as any)[trigger]?.(value);
     },
     [value]
   );
@@ -80,7 +86,7 @@ function useControllableValue<T>(
   /**
    * 非首次渲染
    * 从非受控组件变成受控组件时 和 从受控组件变成非受控组件时，这时的返回值需要关心是使用内部状态值还是外部传入值
-   * 从非受控组件变成受控组件时，由于上一步的mergedValue 已经处理成使用外部传入的value，这里不需要再次处理
+   * 从非受控组件变成受控组件时，由于上一步的mergedValueRef.current 已经处理成使用外部传入的value，这里不需要再次处理
    * 从受控组件变成非受控组件时，由于内部状态值依然使用上一次的状态,这里需要更新内部状态值为undefined
    */
   const isFirstRenderRef = useRef(true);
@@ -91,6 +97,6 @@ function useControllableValue<T>(
     }
     isFirstRenderRef.current = false;
   }, [value]);
-  return [mergedValue, handleChange] as const;
+  return [mergedValueRef.current, handleChange] as const;
 }
 export default useControllableValue;
