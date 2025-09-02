@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-interface IProps<T> {
+/**
+ * 由于IControllableProps的属性名已经定死，不方便使用，这里提供一个可以自定义属性名的options
+ */
+export interface IControllableOptionsProps<T> {
+  defaultValue?: T;
+  valuePropName?: string;
+  defaultValuePropName?: string;
+  trigger?: string;
+}
+
+export interface IControllableProps<T> {
   defaultValue?: T;
   value?: T;
   onChange?: (value: T) => void;
@@ -11,22 +21,38 @@ interface IProps<T> {
  * 受控时，可以通过传入value和onChange来控制值
  * 非受控时，可以通过defaultValue来设置初始值，内部使用setState来管理内部状态
  */
-function useControllableValue<T>(props: IProps<T>) {
-  const { defaultValue, value, onChange } = props;
+function useControllableValue<T>(
+  props: IControllableProps<T>,
+  options: IControllableOptionsProps<T> = {}
+) {
+  const {
+    defaultValue,
+    defaultValuePropName = "defaultValue",
+    valuePropName = "value",
+    trigger = "onChange",
+  } = options;
+  const isControlled = Object.prototype.hasOwnProperty.call(
+    props,
+    valuePropName
+  );
+  const value = props[valuePropName as keyof IControllableProps<T>] as T;
   const [stateValue, setStateValue] = useState(() => {
     /**
      * 这里传入初始值
      * 受控时，初始状态为value
      * 非受控时，初始状态为defaultValue
      */
-    if (value !== undefined) {
+    if (isControlled) {
       /**
        * 判断是否受控，用value是否undefined来判断
        */
       return value;
-    } else {
-      return defaultValue;
+    } else if (
+      props[defaultValuePropName as keyof IControllableProps<T>] !== undefined
+    ) {
+      return props[defaultValuePropName as keyof IControllableProps<T>];
     }
+    return defaultValue;
   });
   /**
    * stateValue: 内部状态值
@@ -46,7 +72,7 @@ function useControllableValue<T>(props: IProps<T>) {
       if (value === undefined) {
         setStateValue(nextValue);
       }
-      onChange?.(nextValue);
+      (props as any)[trigger]?.(nextValue);
     },
     [value]
   );
