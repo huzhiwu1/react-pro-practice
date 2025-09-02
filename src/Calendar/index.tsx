@@ -7,7 +7,10 @@ import {
   useRef,
   useState,
   type ForwardRefRenderFunction,
+  type SetStateAction,
 } from "react";
+import useControllableValue from "../Hooks/useControllableValue";
+import type { IControllableProps } from "../Hooks/useControllableValue";
 import "./index.css";
 
 const MonthName = [
@@ -24,7 +27,7 @@ const MonthName = [
   "十一月",
   "十二月",
 ];
-interface ICalendarProps {
+interface ICalendarProps extends IControllableProps<Date> {
   defaultValue?: Date;
   onChange?: (date: Date) => void;
 }
@@ -36,19 +39,22 @@ const Calender: ForwardRefRenderFunction<ICalendarRef, ICalendarProps> = (
   props,
   ref
 ) => {
-  const { defaultValue, onChange } = props;
-  const [date, setDate] = useState(() => {
-    return defaultValue || new Date();
+  //   const { defaultValue, onChange } = props;
+  //   const [date, setDate] = useState(() => {
+  //     return defaultValue || new Date();
+  //   });
+  const [date, onChange] = useControllableValue<Date>(props, {
+    defaultValue: new Date(),
   });
   const handleClickNext = useCallback(() => {
     console.log(date.getMonth() + 1);
     const newDate = new Date(date.getFullYear(), date.getMonth() + 1, 1);
-    setDate(newDate);
+    onChange(newDate);
   }, [date]);
 
   const handleClickPrev = useCallback(() => {
     const newDate = new Date(date.getFullYear(), date.getMonth() - 1, 1);
-    setDate(newDate);
+    onChange(newDate);
   }, [date]);
   /**
    * new Date(year, monthIndex, day)
@@ -75,8 +81,7 @@ const Calender: ForwardRefRenderFunction<ICalendarRef, ICalendarProps> = (
     for (let i = 1; i <= daysCount; i++) {
       function handleClickDay() {
         const newDate = new Date(date.getFullYear(), date.getMonth(), i);
-        setDate(newDate);
-        onChange?.(newDate);
+        onChange(newDate);
       }
       days.push(
         <div
@@ -97,7 +102,7 @@ const Calender: ForwardRefRenderFunction<ICalendarRef, ICalendarProps> = (
       return {
         getDate: () => date,
         setDate: (newDate: Date) => {
-          setDate(newDate);
+          onChange(newDate);
         },
       };
     },
@@ -131,10 +136,13 @@ const WrapperCalender = forwardRef(Calender);
 
 function App() {
   const calendarRef = useRef<ICalendarRef>(null);
-  const onClickGetDate = useCallback(() => {
-    console.log(calendarRef.current?.getDate());
+  const [date, setDate] = useState(new Date());
+  const onClickGetDate = useCallback((newDate: SetStateAction<Date>) => {
+    setDate(newDate);
   }, []);
 
-  return <WrapperCalender ref={calendarRef} onChange={onClickGetDate} />;
+  return (
+    <WrapperCalender ref={calendarRef} value={date} onChange={onClickGetDate} />
+  );
 }
 export default App;
