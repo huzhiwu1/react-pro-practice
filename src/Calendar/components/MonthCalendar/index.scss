@@ -1,0 +1,30 @@
+.calendar-month-container {
+  .calendar-week-container {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+
+    .calendar-week-item {
+      padding: 20px 16px;
+      text-align: left;
+      color: #7d7d7f;
+      flex: 1;
+    }
+  }
+  .calendar-month-body {
+    .calendar-month-body-row {
+      display: flex;
+      height: 100px;
+      .calendar-month-body-cell {
+        flex: 1;
+        border: 1px solid #eee;
+        padding: 10px;
+        color: #ccc;
+        &.current-month {
+          color: #000;
+        }
+      }
+    }
+  }
+}
