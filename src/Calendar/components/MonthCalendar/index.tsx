@@ -1,6 +1,11 @@
-import type { FC, ReactNode } from "react";
+import { useContext, type FC, type ReactNode } from "react";
 import type { Dayjs } from "dayjs";
 import "./index.scss";
+import {
+  allCalendarLocales,
+  CalendarLocaleContext,
+  type CalendarType,
+} from "../../locale";
 
 export interface MonthCalendarProps {
   value: Dayjs;
@@ -83,17 +88,31 @@ function renderDays(
   ));
 }
 
-function renderWeekDays() {
-  const weekList = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+function renderWeekDays(calendarLocale: CalendarType) {
+  const weekList = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
   return weekList.map((item) => {
-    return <div className="calendar-week-item">{item}</div>;
+    return (
+      <div className="calendar-week-item">{calendarLocale.week[item]}</div>
+    );
   });
 }
 const MonthCalendar: FC<MonthCalendarProps> = (props) => {
   const { dateRender, dateInnerContent } = props;
+  const { locale } = useContext(CalendarLocaleContext);
+  const calendarLocale = allCalendarLocales[locale];
   return (
     <div className="calendar-month-container">
-      <div className="calendar-week-container">{renderWeekDays()}</div>
+      <div className="calendar-week-container">
+        {renderWeekDays(calendarLocale)}
+      </div>
       <div className="calendar-month-body">
         {renderDays(getAllDays(props.value), dateRender, dateInnerContent)}
       </div>

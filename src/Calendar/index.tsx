@@ -6,20 +6,27 @@ import cs from "classnames";
 
 import MonthCalendar from "./components/MonthCalendar";
 import Header from "./components/Header";
+import { CalendarLocaleContext } from "./locale";
 
 export interface CalendarProps extends MonthCalendarProps {
+  locale?: string;
   value: Dayjs;
   style?: CSSProperties;
   className?: string | string[];
 }
 function Calendar(props: CalendarProps) {
-  const { className, style } = props;
+  const { className, style, locale } = props;
   const classNames = cs("calendar", className);
+
   return (
-    <div className={classNames} style={style}>
-      <Header {...props} />
-      <MonthCalendar {...props} />
-    </div>
+    <CalendarLocaleContext.Provider
+      value={{ locale: locale || navigator.language }}
+    >
+      <div className={classNames} style={style}>
+        <Header {...props} />
+        <MonthCalendar {...props} />
+      </div>
+    </CalendarLocaleContext.Provider>
   );
 }
 function App() {
@@ -29,6 +36,7 @@ function App() {
         className={"test_calendar_className"}
         style={{ background: "#097890" }}
         value={DayJS("2025-11-1")}
+        locale="en-US"
         // dateRender={(date) => (
         //   <div
         //     className="dateRender"
