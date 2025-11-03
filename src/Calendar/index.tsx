@@ -1,11 +1,13 @@
 import DayJS from "dayjs";
 import type { Dayjs } from "dayjs";
 import type { CSSProperties } from "react";
+import type { MonthCalendarProps } from "./components/MonthCalendar";
 import cs from "classnames";
+
 import MonthCalendar from "./components/MonthCalendar";
 import Header from "./components/Header";
 
-export interface CalendarProps {
+export interface CalendarProps extends MonthCalendarProps {
   value: Dayjs;
   style?: CSSProperties;
   className?: string | string[];
@@ -25,8 +27,21 @@ function App() {
     <div>
       <Calendar
         className={"test_calendar_className"}
-        style={{ background: "blue" }}
+        style={{ background: "#097890" }}
         value={DayJS("2025-11-1")}
+        // dateRender={(date) => (
+        //   <div
+        //     className="dateRender"
+        //     style={{ background: "red", height: "500px" }}
+        //   >
+        //     {date.format("YY年MM月DD日")}
+        //   </div>
+        // )}
+        dateInnerContent={(date) => (
+          <div style={{ background: "yellow" }}>
+            <p style={{ color: "red" }}>{date.format("YY/MM/DD")}</p>
+          </div>
+        )}
       />
     </div>
   );

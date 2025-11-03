@@ -19,10 +19,14 @@
       .calendar-month-body-cell {
         flex: 1;
         border: 1px solid #eee;
-        padding: 10px;
+        // padding: 10px;
         color: #ccc;
+        overflow: hidden;
         &.current-month {
           color: #000;
+        }
+        &-date {
+          padding: 10px;
         }
       }
     }

@@ -1,9 +1,11 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import type { Dayjs } from "dayjs";
 import "./index.scss";
 
 export interface MonthCalendarProps {
   value: Dayjs;
+  dateRender?: (date: Dayjs) => ReactNode;
+  dateInnerContent?: (date: Dayjs) => ReactNode;
 }
 
 /**
@@ -42,7 +44,11 @@ function getAllDays(value: Dayjs): IDayInfo[] {
   return daysInfo;
 }
 
-function renderDays(daysInfo: IDayInfo[]) {
+function renderDays(
+  daysInfo: IDayInfo[],
+  dateRender: MonthCalendarProps["dateRender"],
+  dateInnerContent: MonthCalendarProps["dateInnerContent"]
+) {
   const rows = [];
   // 6行 7列
   for (let i = 0; i < 6; i++) {
@@ -55,7 +61,18 @@ function renderDays(daysInfo: IDayInfo[]) {
             item.isCurrentMonth ? "current-month" : ""
           }`}
         >
-          {item.date.date()}
+          {dateRender ? (
+            dateRender(item.date)
+          ) : (
+            <div className="calendar-month-body-cell-date">
+              <div className="calendar-month-body-cell-date-value">
+                {item.date.date()}
+              </div>
+              <div className="calendar-month-body-cell-date-content">
+                {dateInnerContent?.(item.date)}
+              </div>
+            </div>
+          )}
         </div>
       );
     }
@@ -73,11 +90,12 @@ function renderWeekDays() {
   });
 }
 const MonthCalendar: FC<MonthCalendarProps> = (props) => {
+  const { dateRender, dateInnerContent } = props;
   return (
     <div className="calendar-month-container">
       <div className="calendar-week-container">{renderWeekDays()}</div>
       <div className="calendar-month-body">
-        {renderDays(getAllDays(props.value))}
+        {renderDays(getAllDays(props.value), dateRender, dateInnerContent)}
       </div>
     </div>
   );
