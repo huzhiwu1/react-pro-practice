@@ -1,13 +1,20 @@
 import DayJS from "dayjs";
-import type { MonthCalendarProps } from "./components/MonthCalendar";
+import type { Dayjs } from "dayjs";
+import type { CSSProperties } from "react";
+import cs from "classnames";
 import MonthCalendar from "./components/MonthCalendar";
 import Header from "./components/Header";
 
-interface CalendarProps extends MonthCalendarProps {}
-
+export interface CalendarProps {
+  value: Dayjs;
+  style?: CSSProperties;
+  className?: string | string[];
+}
 function Calendar(props: CalendarProps) {
+  const { className, style } = props;
+  const classNames = cs("calendar", className);
   return (
-    <div className="calendar">
+    <div className={classNames} style={style}>
       <Header {...props} />
       <MonthCalendar {...props} />
     </div>
@@ -16,7 +23,11 @@ function Calendar(props: CalendarProps) {
 function App() {
   return (
     <div>
-      <Calendar value={DayJS("2025-11-1")} />
+      <Calendar
+        className={"test_calendar_className"}
+        style={{ background: "blue" }}
+        value={DayJS("2025-11-1")}
+      />
     </div>
   );
 }
