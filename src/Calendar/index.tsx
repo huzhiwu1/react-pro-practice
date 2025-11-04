@@ -73,27 +73,4 @@ function Calendar(props: CalendarProps) {
     </CalendarLocaleContext.Provider>
   );
 }
-function App() {
-  return (
-    <div>
-      <Calendar
-        defaultValue={DayJS(Date.now())}
-        // dateRender={(date) => (
-        //   <div
-        //     className="dateRender"
-        //     style={{ background: "red", height: "500px" }}
-        //   >
-        //     {date.format("YY年MM月DD日")}
-        //   </div>
-        // )}
-        onChange={(date) => console.log(date.format("YY年MM月DD日"))}
-        // dateInnerContent={(date) => (
-        //   <div style={{ background: "#fff" }}>
-        //     <p style={{ color: "red" }}>{date.format("YY/MM/DD")}</p>
-        //   </div>
-        // )}
-      />
-    </div>
-  );
-}
-export default App;
+export default Calendar;

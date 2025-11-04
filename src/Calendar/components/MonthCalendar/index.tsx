@@ -111,7 +111,9 @@ function renderWeekDays(calendarLocale: CalendarType) {
   ];
   return weekList.map((item) => {
     return (
-      <div className="calendar-week-item">{calendarLocale.week[item]}</div>
+      <div className="calendar-week-item" key={item}>
+        {calendarLocale.week[item]}
+      </div>
     );
   });
 }
