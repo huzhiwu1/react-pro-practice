@@ -1,6 +1,7 @@
 import DayJS from "dayjs";
 import type { Dayjs } from "dayjs";
 import type { CSSProperties } from "react";
+import { useCallback, useState } from "react";
 import type { MonthCalendarProps } from "./components/MonthCalendar";
 import cs from "classnames";
 
@@ -11,12 +12,20 @@ import { CalendarLocaleContext } from "./locale";
 export interface CalendarProps extends MonthCalendarProps {
   locale?: string;
   value: Dayjs;
+  onChange?: (value: Dayjs) => void;
   style?: CSSProperties;
   className?: string | string[];
 }
 function Calendar(props: CalendarProps) {
-  const { className, style, locale } = props;
+  const { className, style, locale, value, onChange } = props;
   const classNames = cs("calendar", className);
+
+  const [curValue, setCurValue] = useState(value);
+
+  const selectHandler = useCallback((value: Dayjs) => {
+    onChange?.(value);
+    setCurValue(value);
+  }, []);
 
   return (
     <CalendarLocaleContext.Provider
@@ -24,7 +33,11 @@ function Calendar(props: CalendarProps) {
     >
       <div className={classNames} style={style}>
         <Header {...props} />
-        <MonthCalendar {...props} />
+        <MonthCalendar
+          {...props}
+          value={curValue}
+          selectHandler={selectHandler}
+        />
       </div>
     </CalendarLocaleContext.Provider>
   );
@@ -33,10 +46,7 @@ function App() {
   return (
     <div>
       <Calendar
-        className={"test_calendar_className"}
-        style={{ background: "#097890" }}
         value={DayJS("2025-11-1")}
-        locale="en-US"
         // dateRender={(date) => (
         //   <div
         //     className="dateRender"
@@ -45,11 +55,12 @@ function App() {
         //     {date.format("YY年MM月DD日")}
         //   </div>
         // )}
-        dateInnerContent={(date) => (
-          <div style={{ background: "yellow" }}>
-            <p style={{ color: "red" }}>{date.format("YY/MM/DD")}</p>
-          </div>
-        )}
+        onChange={(date) => alert(date.format("YY年MM月DD日"))}
+        // dateInnerContent={(date) => (
+        //   <div style={{ background: "#fff" }}>
+        //     <p style={{ color: "red" }}>{date.format("YY/MM/DD")}</p>
+        //   </div>
+        // )}
       />
     </div>
   );

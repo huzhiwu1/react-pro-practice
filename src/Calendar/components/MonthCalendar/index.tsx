@@ -1,5 +1,6 @@
 import { useContext, type FC, type ReactNode } from "react";
 import type { Dayjs } from "dayjs";
+import cs from "classnames";
 import "./index.scss";
 import {
   allCalendarLocales,
@@ -11,6 +12,7 @@ export interface MonthCalendarProps {
   value: Dayjs;
   dateRender?: (date: Dayjs) => ReactNode;
   dateInnerContent?: (date: Dayjs) => ReactNode;
+  selectHandler?: (date: Dayjs) => void;
 }
 
 /**
@@ -52,7 +54,9 @@ function getAllDays(value: Dayjs): IDayInfo[] {
 function renderDays(
   daysInfo: IDayInfo[],
   dateRender: MonthCalendarProps["dateRender"],
-  dateInnerContent: MonthCalendarProps["dateInnerContent"]
+  dateInnerContent: MonthCalendarProps["dateInnerContent"],
+  selectHandler: MonthCalendarProps["selectHandler"],
+  value: Dayjs
 ) {
   const rows = [];
   // 6行 7列
@@ -65,12 +69,18 @@ function renderDays(
           className={`calendar-month-body-cell ${
             item.isCurrentMonth ? "current-month" : ""
           }`}
+          onClick={() => selectHandler?.(item.date)}
         >
           {dateRender ? (
             dateRender(item.date)
           ) : (
             <div className="calendar-month-body-cell-date">
-              <div className="calendar-month-body-cell-date-value">
+              <div
+                className={cs("calendar-month-body-cell-date-value", {
+                  "calendar-month-body-cell-selected":
+                    value.format("YY/MM/DD") === item.date.format("YY/MM/DD"),
+                })}
+              >
                 {item.date.date()}
               </div>
               <div className="calendar-month-body-cell-date-content">
@@ -105,7 +115,7 @@ function renderWeekDays(calendarLocale: CalendarType) {
   });
 }
 const MonthCalendar: FC<MonthCalendarProps> = (props) => {
-  const { dateRender, dateInnerContent } = props;
+  const { dateRender, dateInnerContent, selectHandler, value } = props;
   const { locale } = useContext(CalendarLocaleContext);
   const calendarLocale = allCalendarLocales[locale];
   return (
@@ -114,7 +124,13 @@ const MonthCalendar: FC<MonthCalendarProps> = (props) => {
         {renderWeekDays(calendarLocale)}
       </div>
       <div className="calendar-month-body">
-        {renderDays(getAllDays(props.value), dateRender, dateInnerContent)}
+        {renderDays(
+          getAllDays(value),
+          dateRender,
+          dateInnerContent,
+          selectHandler,
+          value
+        )}
       </div>
     </div>
   );
