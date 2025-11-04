@@ -10,6 +10,7 @@ import {
 
 export interface MonthCalendarProps {
   value: Dayjs;
+  curMonth: Dayjs;
   dateRender?: (date: Dayjs) => ReactNode;
   dateInnerContent?: (date: Dayjs) => ReactNode;
   selectHandler?: (date: Dayjs) => void;
@@ -115,7 +116,8 @@ function renderWeekDays(calendarLocale: CalendarType) {
   });
 }
 const MonthCalendar: FC<MonthCalendarProps> = (props) => {
-  const { dateRender, dateInnerContent, selectHandler, value } = props;
+  const { dateRender, dateInnerContent, selectHandler, value, curMonth } =
+    props;
   const { locale } = useContext(CalendarLocaleContext);
   const calendarLocale = allCalendarLocales[locale];
   return (
@@ -125,7 +127,7 @@ const MonthCalendar: FC<MonthCalendarProps> = (props) => {
       </div>
       <div className="calendar-month-body">
         {renderDays(
-          getAllDays(value),
+          getAllDays(curMonth),
           dateRender,
           dateInnerContent,
           selectHandler,
