@@ -8,20 +8,25 @@ import cs from "classnames";
 import MonthCalendar from "./components/MonthCalendar";
 import Header from "./components/Header";
 import { CalendarLocaleContext } from "./locale";
+import { useControllableValue } from "ahooks";
 
-export interface CalendarProps extends Omit<MonthCalendarProps, "curMonth"> {
+export interface CalendarProps
+  extends Omit<MonthCalendarProps, "curMonth" | "value"> {
   locale?: string;
-  value: Dayjs;
+  value?: Dayjs;
+  defaultValue?: Dayjs;
   onChange?: (value: Dayjs) => void;
   style?: CSSProperties;
   className?: string | string[];
 }
 function Calendar(props: CalendarProps) {
-  const { className, style, locale, value, onChange } = props;
+  const { className, style, locale, onChange } = props;
   const classNames = cs("calendar", className);
 
-  const [curValue, setCurValue] = useState(value);
-  const [curMonth, setCurMonth] = useState(value);
+  const [curValue, setCurValue] = useControllableValue(props, {
+    defaultValue: DayJS(),
+  });
+  const [curMonth, setCurMonth] = useState(curValue);
 
   const changeDate = useCallback((value: Dayjs) => {
     onChange?.(value);
@@ -72,7 +77,7 @@ function App() {
   return (
     <div>
       <Calendar
-        value={DayJS("2025-11-1")}
+        defaultValue={DayJS(Date.now())}
         // dateRender={(date) => (
         //   <div
         //     className="dateRender"
@@ -81,7 +86,7 @@ function App() {
         //     {date.format("YY年MM月DD日")}
         //   </div>
         // )}
-        onChange={(date) => alert(date.format("YY年MM月DD日"))}
+        onChange={(date) => console.log(date.format("YY年MM月DD日"))}
         // dateInnerContent={(date) => (
         //   <div style={{ background: "#fff" }}>
         //     <p style={{ color: "red" }}>{date.format("YY/MM/DD")}</p>

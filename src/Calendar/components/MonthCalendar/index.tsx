@@ -79,7 +79,7 @@ function renderDays(
               <div
                 className={cs("calendar-month-body-cell-date-value", {
                   "calendar-month-body-cell-selected":
-                    value.format("YY/MM/DD") === item.date.format("YY/MM/DD"),
+                    value?.format("YY/MM/DD") === item.date.format("YY/MM/DD"),
                 })}
               >
                 {item.date.date()}
