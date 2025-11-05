@@ -11,12 +11,13 @@ import type {
 export interface SpaceProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
   style?: CSSProperties;
+  direction?: "horizontal" | "vertical";
 }
 const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
-  const { className, style, children } = props;
+  const { className, style, direction = "horizontal", children } = props;
+
   // 将children扁平化
   const flapChildren = React.Children.toArray(children);
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const nodes = flapChildren.map((item: any, index) => {
     const key = (item && item.key) || `space-item-${index}`;
@@ -26,7 +27,7 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
       </div>
     );
   });
-  const cn = cs(className, "space", {});
+  const cn = cs(className, "space", `space-${direction}`);
   return (
     <div style={style} className={cn}>
       {nodes}
@@ -35,7 +36,7 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
 };
 function App() {
   return (
-    <Space>
+    <Space direction="vertical">
       <div key="test-1">1</div>
       <div key="test-2">2</div>
       <div>3</div>
