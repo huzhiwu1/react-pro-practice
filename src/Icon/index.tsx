@@ -5,6 +5,7 @@ import {
   type SVGAttributes,
 } from "react";
 import cs from "classnames";
+import "./index.scss";
 
 export type BaseIconProps = {
   className?: string;
