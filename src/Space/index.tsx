@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import cs from "classnames";
 import "./index.scss";
 import type {
@@ -8,13 +8,25 @@ import type {
   PropsWithChildren,
 } from "react";
 
+export type SizeType = "small" | "middle" | "large" | number | undefined;
+const SpaceSize = {
+  small: 8,
+  middle: 16,
+  large: 24,
+};
+
+function getSpaceSize(size: SizeType) {
+  return typeof size === "string" ? SpaceSize[size] : size || 0;
+}
 export interface SpaceProps extends HTMLAttributes<HTMLDivElement> {
   className?: string;
   style?: CSSProperties;
   direction?: "horizontal" | "vertical";
   align?: "start" | "end" | "center" | "baseline";
   wrap?: boolean;
+  size?: SizeType | [SizeType, SizeType];
 }
+
 const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
   const {
     className,
@@ -22,7 +34,9 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
     direction = "horizontal",
     align,
     wrap,
+    size = "small",
     children,
+    ...restProps
   } = props;
 
   // 如果是水平排列，默认子组件锤子居中
@@ -46,11 +60,23 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
   if (wrap) {
     otherStyle.flexFlow = "wrap";
   }
+
+  const [horizontalSize, verticalSize] = useMemo(() => {
+    const sizeArr = (Array.isArray(size) ? size : [size, size]) as [
+      SizeType,
+      SizeType
+    ];
+    return sizeArr.map((size) => getSpaceSize(size));
+  }, [size]);
+
+  otherStyle.rowGap = horizontalSize;
+  otherStyle.columnGap = verticalSize;
+
   const cn = cs(className, "space", `space-${direction}`, {
     [`space-align-${mergedAlign}`]: mergedAlign,
   });
   return (
-    <div style={{ ...style, ...otherStyle }} className={cn}>
+    <div style={{ ...style, ...otherStyle }} className={cn} {...restProps}>
       {nodes}
     </div>
   );
