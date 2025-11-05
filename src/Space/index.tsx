@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useContext, useMemo } from "react";
 import cs from "classnames";
 import "./index.scss";
 import type {
@@ -8,6 +8,7 @@ import type {
   PropsWithChildren,
   ReactNode,
 } from "react";
+import { ConfigProvider, ConfigContext } from "./ConfigProvider";
 
 export type SizeType = "small" | "middle" | "large" | number | undefined;
 const SpaceSize = {
@@ -30,13 +31,14 @@ export interface SpaceProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
+  const { space } = useContext(ConfigContext);
   const {
     className,
     style,
     direction = "horizontal",
     align,
     wrap,
-    size = "small",
+    size = space?.size || "small",
     children,
     split,
     ...restProps
@@ -91,25 +93,27 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
 };
 function App() {
   return (
-    <Space
-      direction="horizontal"
-      style={{ width: "300px", height: "300px", background: "blue" }}
-      wrap
-      size={20}
-      split={
-        <div
-          style={{
-            background: "yellow",
-            width: "1px",
-            height: "10px",
-          }}
-        ></div>
-      }
-    >
-      <div style={{ width: "120px", height: "60px", background: "red" }} />
-      <div style={{ width: "120px", height: "60px", background: "red" }} />
-      <div style={{ width: "120px", height: "60px", background: "red" }} />
-    </Space>
+    <ConfigProvider space={{ size: 30 }}>
+      <Space
+        direction="horizontal"
+        style={{ width: "300px", height: "300px", background: "blue" }}
+        wrap
+        // size={20}
+        split={
+          <div
+            style={{
+              background: "yellow",
+              width: "1px",
+              height: "10px",
+            }}
+          ></div>
+        }
+      >
+        <div style={{ width: "120px", height: "60px", background: "red" }} />
+        <div style={{ width: "120px", height: "60px", background: "red" }} />
+        <div style={{ width: "120px", height: "60px", background: "red" }} />
+      </Space>
+    </ConfigProvider>
   );
 }
 
