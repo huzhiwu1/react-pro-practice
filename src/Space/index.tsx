@@ -6,6 +6,7 @@ import type {
   FC,
   HTMLAttributes,
   PropsWithChildren,
+  ReactNode,
 } from "react";
 
 export type SizeType = "small" | "middle" | "large" | number | undefined;
@@ -25,6 +26,7 @@ export interface SpaceProps extends HTMLAttributes<HTMLDivElement> {
   align?: "start" | "end" | "center" | "baseline";
   wrap?: boolean;
   size?: SizeType | [SizeType, SizeType];
+  split?: ReactNode;
 }
 
 const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
@@ -36,6 +38,7 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
     wrap,
     size = "small",
     children,
+    split,
     ...restProps
   } = props;
 
@@ -49,9 +52,14 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
   const nodes = flapChildren.map((item: any, index) => {
     const key = (item && item.key) || `space-item-${index}`;
     return (
-      <div className="space-item" key={key}>
-        {item}
-      </div>
+      <>
+        <div className="space-item" key={key}>
+          {item}
+        </div>
+        {split && index < flapChildren.length && (
+          <span className="space-split">{split}</span>
+        )}
+      </>
     );
   });
 
@@ -87,6 +95,16 @@ function App() {
       direction="horizontal"
       style={{ width: "300px", height: "300px", background: "blue" }}
       wrap
+      size={20}
+      split={
+        <div
+          style={{
+            background: "yellow",
+            width: "1px",
+            height: "10px",
+          }}
+        ></div>
+      }
     >
       <div style={{ width: "120px", height: "60px", background: "red" }} />
       <div style={{ width: "120px", height: "60px", background: "red" }} />
