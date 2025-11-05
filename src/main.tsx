@@ -18,5 +18,6 @@ import "./index.css";
 // import App from "./Calendar";
 // import App from "./Icon";
 // import App from "./Icon/icons/iconAdd";
-import App from "./Icon/app";
+// import App from "./Icon/app";
+import App from "./Space";
 createRoot(document.getElementById("root")!).render(<App />);

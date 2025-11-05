@@ -1,9 +1,9 @@
-import createFromIconFont from "../Icon/createFromIconFont";
+import createFromIconfont from "./createFromIconfont";
 import { IconAdd } from "./Icons/iconAdd";
 import { IconEmail } from "./Icons/iconEmail";
 
 function App() {
-  const IconFont = createFromIconFont(
+  const IconFont = createFromIconfont(
     "//at.alicdn.com/t/c/font_5057985_4kho4141eru.js"
   );
   return (
