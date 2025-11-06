@@ -21,5 +21,6 @@ import "./index.css";
 // import App from "./Icon/app";
 // import App from "./Space";
 // import App from "./Portal";
-import App from "./ObserverMutation";
+// import App from "./ObserverMutation";
+import App from "./CopyToClipboard";
 createRoot(document.getElementById("root")!).render(<App />);

@@ -14,6 +14,7 @@
   "dependencies": {
     "ahooks": "^3.9.6",
     "classnames": "^2.5.1",
+    "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.18",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -29,18 +30,18 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/browser-playwright": "^4.0.6",
+    "@vitest/coverage-v8": "^4.0.6",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "eslint-plugin-storybook": "^10.0.4",
     "globals": "^16.3.0",
+    "playwright": "^1.56.1",
     "storybook": "^10.0.4",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.1",
     "vite": "^7.1.2",
-    "vitest": "^4.0.6",
-    "playwright": "^1.56.1",
-    "@vitest/browser-playwright": "^4.0.6",
-    "@vitest/coverage-v8": "^4.0.6"
+    "vitest": "^4.0.6"
   }
 }
