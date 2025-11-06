@@ -79,6 +79,7 @@ function useControllableValue<T>(
       if (!isControlled) {
         setStateValue(newValue);
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (props as any)[trigger]?.(newValue);
     },
     [value]
