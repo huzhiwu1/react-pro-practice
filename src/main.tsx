@@ -25,5 +25,5 @@ import "./index.css";
 // import App from "./CopyToClipboard";
 // import App from "./LazyLoad";
 // import App from "./Hooks/useCookie";
-import App from "./Hooks/useHover";
+import App from "./Hooks/useScroll";
 createRoot(document.getElementById("root")!).render(<App />);
