@@ -23,5 +23,6 @@ import "./index.css";
 // import App from "./Portal";
 // import App from "./ObserverMutation";
 // import App from "./CopyToClipboard";
-import App from "./LazyLoad";
+// import App from "./LazyLoad";
+import App from "./Hooks/useCookie";
 createRoot(document.getElementById("root")!).render(<App />);

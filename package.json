@@ -16,6 +16,7 @@
     "classnames": "^2.5.1",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.18",
+    "js-cookie": "^3.0.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "sass": "^1.91.0"
