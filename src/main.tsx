@@ -26,5 +26,7 @@ import "./index.css";
 // import App from "./LazyLoad";
 // import App from "./Hooks/useCookie";
 // import App from "./Hooks/useScroll";
-import App from "./Hooks/useSize";
+// import App from "./Hooks/useSize";
+// import App from "./Hooks/useTimeout";
+import App from "./Hooks/useInterval";
 createRoot(document.getElementById("root")!).render(<App />);
