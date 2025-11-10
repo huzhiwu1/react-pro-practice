@@ -29,5 +29,6 @@ import "./index.css";
 // import App from "./Hooks/useSize";
 // import App from "./Hooks/useTimeout";
 // import App from "./Hooks/useInterval";
-import App from "./Hooks/useWhyDidYouUpdate";
+// import App from "./Hooks/useWhyDidYouUpdate";
+import App from "./Hooks/useCountDown";
 createRoot(document.getElementById("root")!).render(<App />);
