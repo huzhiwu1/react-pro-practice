@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createRef, useState } from "react";
 import type { MessageProps } from ".";
 
 const initialState: MessageProps[] = [];
@@ -17,6 +17,7 @@ export const useStore = () => {
             {
               ...message,
               id,
+              nodeRef: createRef(),
             },
           ];
         });
@@ -27,7 +28,7 @@ export const useStore = () => {
       if (index !== -1) {
         setMessageList((preState) => {
           const newState = [...preState];
-          newState[index] = { ...message, id };
+          newState[index] = { ...message, id, nodeRef: createRef() };
           return newState;
         });
       }

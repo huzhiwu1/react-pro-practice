@@ -1,11 +1,16 @@
-import { useEffect, type CSSProperties, type FC, type ReactNode } from "react";
+import { useEffect } from "react";
+import type { CSSProperties, FC, ReactNode, RefObject } from "react";
+import cs from "classnames";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useStore } from "./useStore";
+import "./index.scss";
 
 export type MessageProps = {
   className?: string;
   style?: CSSProperties;
   content?: ReactNode;
   id?: number;
+  nodeRef?: RefObject<HTMLDivElement | null>;
 };
 
 const MessageProvider: FC<{}> = (props) => {
@@ -14,7 +19,7 @@ const MessageProvider: FC<{}> = (props) => {
   useEffect(() => {
     const timer = setInterval(() => {
       add({
-        content: Math.random().toString().slice(0, 5),
+        content: Math.random().toString().slice(2, 8),
       });
     }, 1000);
     return () => clearInterval(timer);
@@ -25,24 +30,32 @@ const MessageProvider: FC<{}> = (props) => {
       <button onClick={() => update(2, { content: "更新id=2" })}>
         更新id=2
       </button>
-      <button onClick={() => clear()}>清楚</button>
-
-      {messageList.map((message) => {
-        return (
-          <div
-            className={message.className}
-            style={{
-              width: 100,
-              lineHeight: "30px",
-              border: "1px solid #000",
-              margin: "20px",
-            }}
-            key={message.id}
-          >
-            {message.content}
-          </div>
-        );
-      })}
+      <button onClick={() => clear()}>清除</button>
+      <TransitionGroup className="message-wrapper">
+        {messageList.map((message) => {
+          return (
+            <CSSTransition
+              nodeRef={message.nodeRef}
+              key={message.id}
+              classNames="message"
+              timeout={1000}
+            >
+              <div
+                ref={message.nodeRef}
+                className={cs(message.className, "message-item")}
+                style={{
+                  width: 100,
+                  lineHeight: "30px",
+                  border: "1px solid #000",
+                  margin: "20px",
+                }}
+              >
+                {message.content}
+              </div>
+            </CSSTransition>
+          );
+        })}
+      </TransitionGroup>
     </>
   );
 };
