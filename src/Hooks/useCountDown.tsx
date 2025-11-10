@@ -8,6 +8,7 @@ export type TDate = ConfigType;
  */
 export type OptionType = {
   targetDate?: TDate; // 目标日期
+  leftTime?: number; // 倒计时的时间
   interval?: number; // 倒计时的间隔
 };
 
@@ -38,22 +39,43 @@ function parseMs(milliseconds: number): FormattedRes {
  * 计算剩余时间
  */
 function calcLeft(target: TDate) {
+  if (!target) {
+    return 0;
+  }
   // 目标日期的时间戳 - 当前的时间戳
   const left = dayjs(target).valueOf() - Date.now();
   return left < 0 ? 0 : left;
 }
 function useCountDown(options: OptionType) {
-  const { targetDate, interval = 1000 } = options;
+  const { targetDate, leftTime, interval = 1000 } = options;
+  /**
+   * 目标时间点
+   * 1. 有传入leftTime，则目标日期是leftTime + Date.now()
+   * 2. 没有传入leftTime,有传入targetDate,则目标日期是targetDate
+   */
+  const memoLeftTime = useMemo(() => {
+    if (typeof leftTime !== "undefined" && leftTime > 0) {
+      return leftTime + Date.now();
+    }
+    return undefined;
+  }, [leftTime]);
+
+  const target = "leftTime" in options ? memoLeftTime : targetDate;
 
   // 剩余的倒计时时间
-  const [timeLeft, setTimeLeft] = useState(() => calcLeft(targetDate));
+  const [timeLeft, setTimeLeft] = useState(() => calcLeft(target));
 
   useEffect(() => {
+    if (!target) {
+      setTimeLeft(0);
+      return;
+    }
+    setTimeLeft(calcLeft(target));
     /**
      * 对目标日期进行倒计时
      */
     const timer = setInterval(() => {
-      setTimeLeft(calcLeft(targetDate));
+      setTimeLeft(calcLeft(target));
       // 倒计时归零则停止计时
       if (timeLeft <= 0) {
         clearInterval(timer);
@@ -75,6 +97,7 @@ function App() {
     targetDate: `${currentDate.getFullYear()}-${
       currentDate.getMonth() + 1
     }-${currentDate.getDate()} 17:11:11`,
+    leftTime: 1000 * 60 * 60 * 24,
   });
   const { days, hours, minutes, seconds, milliseconds } = formattedRes;
   return (
