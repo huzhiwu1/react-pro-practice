@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import type { CSSProperties, FC, ReactNode, RefObject } from "react";
 import cs from "classnames";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useStore } from "./useStore";
 import "./index.scss";
+import { createPortal } from "react-dom";
 
 export type MessageProps = {
   className?: string;
@@ -24,7 +25,7 @@ const MessageProvider: FC<{}> = (props) => {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
-  return (
+  const content = (
     <>
       <button onClick={() => remove(1)}>删除id=1</button>
       <button onClick={() => update(2, { content: "更新id=2" })}>
@@ -58,6 +59,13 @@ const MessageProvider: FC<{}> = (props) => {
       </TransitionGroup>
     </>
   );
+  const wrapper = useMemo(() => {
+    const div = document.createElement("div");
+    div.className = "message-container";
+    document.body.appendChild(div);
+    return div;
+  }, []);
+  return createPortal(content, wrapper);
 };
 
 function App() {
