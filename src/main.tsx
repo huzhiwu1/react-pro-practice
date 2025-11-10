@@ -30,5 +30,6 @@ import "./index.css";
 // import App from "./Hooks/useTimeout";
 // import App from "./Hooks/useInterval";
 // import App from "./Hooks/useWhyDidYouUpdate";
-import App from "./Hooks/useCountDown";
+// import App from "./Hooks/useCountDown";
+import App from "./Message";
 createRoot(document.getElementById("root")!).render(<App />);

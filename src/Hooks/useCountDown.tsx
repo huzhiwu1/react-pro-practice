@@ -105,8 +105,8 @@ function App() {
   const [_, formattedRes] = useCountDown({
     targetDate: `${currentDate.getFullYear()}-${
       currentDate.getMonth() + 1
-    }-${currentDate.getDate()} 17:11:11`,
-    leftTime: 1000 * 3,
+    }-${currentDate.getDate()} 16:46:38`,
+    // leftTime: 1000 * 3,
     onEnd: () => console.log("倒计时完成"),
   });
   const { days, hours, minutes, seconds, milliseconds } = formattedRes;
