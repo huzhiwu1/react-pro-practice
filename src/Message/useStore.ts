@@ -1,48 +1,95 @@
 import { createRef, useState } from "react";
-import type { MessageProps } from ".";
+import type { MessageProps, Position } from ".";
 
-const initialState: MessageProps[] = [];
+export type MessageList = {
+  top: MessageProps[];
+  bottom: MessageProps[];
+};
+const initialState: MessageList = {
+  top: [],
+  bottom: [],
+};
 
-export const useStore = () => {
-  const [messageList, setMessageList] = useState<MessageProps[]>(initialState);
+export const useStore = (defaultPosition: Position) => {
+  const [messageList, setMessageList] = useState<MessageList>(initialState);
   return {
     messageList,
     add: (message: MessageProps) => {
       const id = getId(message);
-      const index = findMessageIndex(messageList, id);
-      if (index === -1) {
-        setMessageList((preState) => {
-          return [
-            {
-              ...message,
-              id,
-              nodeRef: createRef(),
-            },
-            ...preState,
-          ];
-        });
-      }
+
+      setMessageList((preState) => {
+        if (message?.id) {
+          const position = getMessagePosition(preState, message?.id);
+          if (position) {
+            return preState;
+          }
+        }
+        const position = message.position || defaultPosition;
+
+        const messages = position.includes("top")
+          ? [
+              {
+                ...message,
+                id,
+                nodeRef: createRef(),
+              },
+              ...preState[position],
+            ]
+          : [
+              ...preState[position],
+              {
+                ...message,
+                id,
+                nodeRef: createRef(),
+              },
+            ];
+        return {
+          ...preState,
+          [position]: messages,
+        };
+      });
+
+      return id;
     },
     update: (id: number, message: MessageProps) => {
-      const index = findMessageIndex(messageList, id);
-      if (index !== -1) {
-        setMessageList((preState) => {
-          const newState = [...preState];
-          newState[index] = { ...message, id, nodeRef: createRef() };
-          return newState;
-        });
+      if (!id) {
+        return;
       }
+
+      setMessageList((preState) => {
+        const { position, index } = findMessage(preState, id);
+        if (!position) {
+          return preState;
+        }
+        const newState = { ...preState };
+        if (index !== -1 && position) {
+          newState[position][index] = {
+            ...newState[position][index],
+            ...message,
+          };
+        }
+        return newState;
+      });
     },
     remove: (id: number) => {
-      const index = findMessageIndex(messageList, id);
-
-      if (index !== -1) {
-        setMessageList((preState) => {
-          const newState = [...preState].filter((item) => item.id !== id);
-
-          return newState;
-        });
+      if (!id) {
+        return;
       }
+
+      setMessageList((preState) => {
+        const { index, position } = findMessage(preState, id);
+        if (!position) {
+          return preState;
+        }
+        const newState = { ...preState };
+        if (index !== -1 && position) {
+          newState[position] = newState[position].filter(
+            (item) => item.id !== id
+          );
+        }
+
+        return newState;
+      });
     },
     clearAll: () => {
       setMessageList(initialState);
@@ -63,6 +110,20 @@ function getId(message: MessageProps) {
   return count;
 }
 
-function findMessageIndex(messageList: MessageProps[], id: number): number {
-  return messageList.findIndex((item) => item.id === id);
+function getMessagePosition(messageList: MessageList, id: number) {
+  for (const [position, list] of Object.entries(messageList)) {
+    if (list.find((item) => item.id === id)) {
+      return position as Position;
+    }
+  }
+}
+function findMessage(messageList: MessageList, id: number) {
+  const position = getMessagePosition(messageList, id);
+  const index = position
+    ? messageList[position].findIndex((item) => item.id === id)
+    : -1;
+  return {
+    position,
+    index,
+  } as const;
 }

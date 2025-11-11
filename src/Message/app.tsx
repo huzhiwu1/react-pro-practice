@@ -10,6 +10,13 @@ function Aaa() {
       <button onClick={() => messageProviderRef.add({ content: "请求成功" })}>
         请求成功！
       </button>
+      <button
+        onClick={() =>
+          messageProviderRef.add({ content: "请求失败", position: "bottom" })
+        }
+      >
+        请求失败！
+      </button>
     </div>
   );
 }
