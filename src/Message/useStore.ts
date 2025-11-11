@@ -35,10 +35,11 @@ export const useStore = () => {
     },
     remove: (id: number) => {
       const index = findMessageIndex(messageList, id);
+
       if (index !== -1) {
         setMessageList((preState) => {
-          const newState = [...preState];
-          newState.splice(index, 1);
+          const newState = [...preState].filter((item) => item.id !== id);
+
           return newState;
         });
       }

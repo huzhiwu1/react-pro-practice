@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from "react";
 import type { CSSProperties, FC, ReactNode, RefObject } from "react";
-import cs from "classnames";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useStore } from "./useStore";
 import "./index.scss";
 import { createPortal } from "react-dom";
+import MessageItem from "./messageItem";
 
 export type MessageProps = {
   className?: string;
@@ -22,7 +22,7 @@ const MessageProvider: FC<{}> = (props) => {
       add({
         content: Math.random().toString().slice(2, 8),
       });
-    }, 1000);
+    }, 2000);
     return () => clearInterval(timer);
   }, []);
   const content = (
@@ -41,18 +41,7 @@ const MessageProvider: FC<{}> = (props) => {
               classNames="message"
               timeout={1000}
             >
-              <div
-                ref={message.nodeRef}
-                className={cs(message.className, "message-item")}
-                style={{
-                  width: 100,
-                  lineHeight: "30px",
-                  border: "1px solid #000",
-                  margin: "20px",
-                }}
-              >
-                {message.content}
-              </div>
+              <MessageItem ref={message.nodeRef} {...message} remove={remove} />
             </CSSTransition>
           );
         })}
