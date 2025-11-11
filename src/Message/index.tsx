@@ -1,4 +1,10 @@
-import { useEffect, useMemo } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
 import type { CSSProperties, FC, ReactNode, RefObject } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useStore } from "./useStore";
@@ -13,25 +19,26 @@ export type MessageProps = {
   id?: number;
   nodeRef?: RefObject<HTMLDivElement | null>;
 };
+export type MessageProviderRef = {
+  messageList: MessageProps[];
+  add: (message: MessageProps) => void;
+  remove: (id: number) => void;
+  update: (id: number, message: MessageProps) => void;
+  clearAll: () => void;
+};
+const MessageProvider = forwardRef<MessageProviderRef>((props, ref) => {
+  const { messageList, add, remove, update, clearAll } = useStore();
 
-const MessageProvider: FC<{}> = (props) => {
-  const { messageList, add, remove, update, clear } = useStore();
+  useImperativeHandle(ref, () => ({
+    messageList,
+    add,
+    remove,
+    update,
+    clearAll,
+  }));
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      add({
-        content: Math.random().toString().slice(2, 8),
-      });
-    }, 2000);
-    return () => clearInterval(timer);
-  }, []);
   const content = (
     <>
-      <button onClick={() => remove(1)}>删除id=1</button>
-      <button onClick={() => update(2, { content: "更新id=2" })}>
-        更新id=2
-      </button>
-      <button onClick={() => clear()}>清除</button>
       <TransitionGroup className="message-wrapper">
         {messageList.map((message) => {
           return (
@@ -55,12 +62,22 @@ const MessageProvider: FC<{}> = (props) => {
     return div;
   }, []);
   return createPortal(content, wrapper);
-};
+});
 
 function App() {
+  const messageProviderRef = useRef<MessageProviderRef>(null);
   return (
     <div>
-      <MessageProvider />
+      <button
+        onClick={() =>
+          messageProviderRef.current?.add?.({
+            content: "请求成功！",
+          })
+        }
+      >
+        请求成功！
+      </button>
+      <MessageProvider ref={messageProviderRef} />
     </div>
   );
 }

@@ -13,12 +13,12 @@ export const useStore = () => {
       if (index === -1) {
         setMessageList((preState) => {
           return [
-            ...preState,
             {
               ...message,
               id,
               nodeRef: createRef(),
             },
+            ...preState,
           ];
         });
       }
@@ -44,7 +44,7 @@ export const useStore = () => {
         });
       }
     },
-    clear: () => {
+    clearAll: () => {
       setMessageList(initialState);
     },
   };
