@@ -1,11 +1,5 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-} from "react";
-import type { CSSProperties, FC, ReactNode, RefObject } from "react";
+import { forwardRef, useMemo } from "react";
+import type { CSSProperties, ReactNode, RefObject } from "react";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useStore } from "./useStore";
 import "./index.scss";
@@ -29,13 +23,19 @@ export type MessageProviderRef = {
 const MessageProvider = forwardRef<MessageProviderRef>((props, ref) => {
   const { messageList, add, remove, update, clearAll } = useStore();
 
-  useImperativeHandle(ref, () => ({
-    messageList,
-    add,
-    remove,
-    update,
-    clearAll,
-  }));
+  // useImperativeHandle(ref, () => {
+  //   debugger;
+  //   return { messageList, add, remove, update, clearAll };
+  // });
+  if ("current" in ref!) {
+    ref.current = {
+      messageList,
+      add,
+      remove,
+      update,
+      clearAll,
+    };
+  }
 
   const content = (
     <>
@@ -64,22 +64,4 @@ const MessageProvider = forwardRef<MessageProviderRef>((props, ref) => {
   return createPortal(content, wrapper);
 });
 
-function App() {
-  const messageProviderRef = useRef<MessageProviderRef>(null);
-  return (
-    <div>
-      <button
-        onClick={() =>
-          messageProviderRef.current?.add?.({
-            content: "请求成功！",
-          })
-        }
-      >
-        请求成功！
-      </button>
-      <MessageProvider ref={messageProviderRef} />
-    </div>
-  );
-}
-
-export default App;
+export default MessageProvider;
