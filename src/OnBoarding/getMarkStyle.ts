@@ -8,12 +8,11 @@ function getMarkStyle(
     return {};
   }
   const { width, height, top, left } = element.getBoundingClientRect();
-  console.log(element.getBoundingClientRect());
 
   const elementTopWithScroll = top + container.scrollTop;
   const elementLeftWithScroll = left + container.scrollLeft;
 
-  const a = {
+  return {
     width: container.scrollWidth,
     height: container.scrollHeight,
     borderTopWidth: Math.max(elementTopWithScroll, 0),
@@ -27,9 +26,6 @@ function getMarkStyle(
       0
     ),
   };
-  console.log("a", a);
-
-  return a;
 }
 
 export default getMarkStyle;

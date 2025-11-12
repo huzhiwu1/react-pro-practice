@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FC, ReactNode, CSSProperties } from "react";
 import getMarkStyle from "./getMarkStyle";
 import "./Mark.scss";
+import ResizeObserver from "resize-observer-polyfill";
 
 export type MarkProps = {
   element: HTMLElement | (() => HTMLElement); // 目标元素，
@@ -14,13 +15,7 @@ const Mark: FC<MarkProps> = (props) => {
   let { element, container } = props;
   const [style, setStyle] = useState<CSSProperties>();
 
-  //   const setMarkStyle = useCallback(() => {}, []);
-
-  useEffect(() => {
-    if (!element) {
-      return;
-    }
-
+  const setMarkStyle = useCallback(() => {
     if (typeof element === "function") {
       element = element();
     }
@@ -39,10 +34,31 @@ const Mark: FC<MarkProps> = (props) => {
     );
 
     setStyle(markStyle);
+  }, [element, container]);
+
+  // 容器高度变化的话，重新计算mark 的样式
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      setMarkStyle();
+    });
+    if (typeof container === "function") {
+      container = container();
+    }
+    observer.observe(container || document.documentElement);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!element) {
+      return;
+    }
+    setMarkStyle();
 
     // 获取目标元素在容器中的位置，目标元素的宽高
     // 以此制定mark元素的宽，高，border的宽高
-  }, [element, container]);
+  }, [setMarkStyle]);
 
   const content = useMemo(() => {
     if (!renderMarkContent) {
