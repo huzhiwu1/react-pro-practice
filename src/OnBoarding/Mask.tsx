@@ -85,7 +85,7 @@ function OverflowHidden() {
     prevStyleOverflow.current = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
-      if (prevStyleOverflow.current) {
+      if (prevStyleOverflow.current !== null) {
         document.body.style.overflow = prevStyleOverflow.current;
       }
     };
