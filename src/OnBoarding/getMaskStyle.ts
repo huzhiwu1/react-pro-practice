@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-function getMarkStyle(
+function getMaskStyle(
   element: HTMLElement,
   container: HTMLElement
 ): CSSProperties {
@@ -28,4 +28,4 @@ function getMarkStyle(
   };
 }
 
-export default getMarkStyle;
+export default getMaskStyle;
