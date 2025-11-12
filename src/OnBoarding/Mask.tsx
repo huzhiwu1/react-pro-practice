@@ -8,57 +8,96 @@ export type MaskProps = {
   element: HTMLElement | (() => HTMLElement); // 目标元素，
   container?: HTMLElement | (() => HTMLElement); // 目标元素的容器
   renderMaskContent?: (wrapper: ReactNode) => ReactNode; // mask会包围住element,randerMaskConten可以在mask周围渲染其他内容
+  onAnimationStart?: () => void;
+  onAnimationEnd?: () => void;
 };
 
 const Mask: FC<MaskProps> = (props) => {
-  const { renderMaskContent } = props;
-  let { element, container } = props;
+  const {
+    renderMaskContent,
+    element,
+    container,
+    onAnimationStart,
+    onAnimationEnd,
+  } = props;
   const [style, setStyle] = useState<CSSProperties>();
+  const elementRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLElement | undefined>(null);
 
-  const setMaskStyle = useCallback(() => {
-    if (typeof element === "function") {
-      element = element();
-    }
-    if (typeof container === "function") {
-      container = container();
-    }
+  const onAnimationStartRef = useRef(onAnimationStart);
+  onAnimationStartRef.current = onAnimationStart;
 
-    element.scrollIntoView({
-      block: "center",
-      inline: "center",
-    });
+  const onAnimationEndRef = useRef(onAnimationEnd);
+  onAnimationEndRef.current = onAnimationEnd;
 
-    const maskStyle = getMaskStyle(
-      element,
-      container || document.documentElement
-    );
-
-    setStyle(maskStyle);
+  const setElementRef = useCallback(() => {
+    elementRef.current = typeof element === "function" ? element() : element;
+    containerRef.current =
+      typeof container === "function" ? container() : container;
   }, [element, container]);
 
-  // 容器高度变化的话，重新计算mask 的样式
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      setMaskStyle();
-    });
-    if (typeof container === "function") {
-      container = container();
+  const setMaskStyle = useCallback(() => {
+    if (!elementRef.current) {
+      return;
     }
-    observer.observe(container || document.documentElement);
-    return () => {
-      observer.disconnect();
-    };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          elementRef.current?.scrollIntoView({
+            block: "center",
+            inline: "center",
+          });
+        } else {
+          const maskStyle = getMaskStyle(
+            elementRef.current!,
+            containerRef.current || document.documentElement
+          );
+
+          setStyle(maskStyle);
+          observer.unobserve(elementRef.current!);
+
+          observer.disconnect();
+        }
+      });
+    });
+
+    observer.observe(elementRef.current!);
   }, []);
+
+  // 目标元素变化时，mark会有200ms的动画
+  // 30ms加个缓冲
+  useEffect(() => {
+    onAnimationStartRef.current?.();
+    const timer = setTimeout(() => {
+      onAnimationEndRef.current?.();
+    }, 230);
+    return () => clearTimeout(timer);
+  }, [element]);
 
   useEffect(() => {
     if (!element) {
       return;
     }
+    setElementRef();
+
     setMaskStyle();
 
     // 获取目标元素在容器中的位置，目标元素的宽高
     // 以此制定mask元素的宽，高，border的宽高
-  }, [setMaskStyle]);
+  }, [setMaskStyle, setElementRef]);
+
+  // 容器高度变化的话，重新计算mask 的样式
+  useEffect(() => {
+    setElementRef();
+    const observer = new ResizeObserver(() => {
+      setMaskStyle();
+    });
+
+    observer.observe(containerRef.current || document.documentElement);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const content = useMemo(() => {
     if (!renderMaskContent) {
