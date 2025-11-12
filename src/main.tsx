@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import "./index.css";
+// import "./index.css";
 // import App from "./demo/reducer_demo";
 // import App from "./demo/ref_demo";
 // import App from "./demo/context_demo";
@@ -31,5 +31,6 @@ import "./index.css";
 // import App from "./Hooks/useInterval";
 // import App from "./Hooks/useWhyDidYouUpdate";
 // import App from "./Hooks/useCountDown";
-import App from "./Message/app";
+// import App from "./Message/app";
+import App from "./OnBoarding/app";
 createRoot(document.getElementById("root")!).render(<App />);
