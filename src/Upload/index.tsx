@@ -14,6 +14,7 @@ export type UploadProps = PropsWithChildren<{
   multiple?: boolean; // 是否能上传多个文件
   name?: string; // 后端接收文件的key
   withCredentials?: boolean; // 是否携带cookie
+  beforeUpload?: (file: File) => boolean | Promise<File>;
 }>;
 
 const Upload: FC<UploadProps> = (props) => {
@@ -26,6 +27,7 @@ const Upload: FC<UploadProps> = (props) => {
     name,
     withCredentials,
     children,
+    beforeUpload,
   } = props;
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -62,11 +64,22 @@ const Upload: FC<UploadProps> = (props) => {
       // files是类数组类型，将其转化为数组类型
       const postFiles = Array.from(files);
       postFiles.forEach((file) => {
-        // 将文件单个上传
-        post(file);
+        if (beforeUpload) {
+          const result = beforeUpload(file);
+          if (result && result instanceof Promise) {
+            result.then((processedFile) => {
+              post(processedFile);
+            });
+          } else if (result !== false) {
+            post(file);
+          }
+        } else {
+          // 将文件单个上传
+          post(file);
+        }
       });
     },
-    [post]
+    [post, beforeUpload]
   );
 
   const handleFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
