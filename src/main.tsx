@@ -32,5 +32,6 @@ import { createRoot } from "react-dom/client";
 // import App from "./Hooks/useWhyDidYouUpdate";
 // import App from "./Hooks/useCountDown";
 // import App from "./Message/app";
-import App from "./OnBoarding/app";
+// import App from "./OnBoarding/app";
+import App from "./Upload/app";
 createRoot(document.getElementById("root")!).render(<App />);
