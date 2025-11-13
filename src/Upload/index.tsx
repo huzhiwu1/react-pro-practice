@@ -16,6 +16,10 @@ export type UploadProps = PropsWithChildren<{
   withCredentials?: boolean; // 是否携带cookie
   beforeUpload?: (file: File) => boolean | Promise<File>;
   onProgress?: (percentage: number, file: File) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSuccess?: (data: any, file: File) => void;
+  onError?: (error: Error, file: File) => void;
+  onChange?: (file: File) => void;
 }>;
 
 const Upload: FC<UploadProps> = (props) => {
@@ -30,6 +34,9 @@ const Upload: FC<UploadProps> = (props) => {
     children,
     beforeUpload,
     onProgress,
+    onSuccess,
+    onError,
+    onChange,
   } = props;
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -50,29 +57,47 @@ const Upload: FC<UploadProps> = (props) => {
           formData.append(key, data[key]);
         });
       }
-      axios.post(action, formData, {
-        headers: {
-          ...headers,
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: withCredentials,
-        onUploadProgress: (e) => {
-          if (!onProgress) {
-            return;
-          }
-          let percentage: number = 0;
-          if (e.progress) {
-            percentage = Math.round(e.progress * 100);
-          } else {
-            percentage = Math.round((e.loaded * 100) / e.total!);
-          }
-          if (percentage < 100) {
-            onProgress(percentage, file);
-          }
-        },
-      });
+      axios
+        .post(action, formData, {
+          headers: {
+            ...headers,
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: withCredentials,
+          onUploadProgress: (e) => {
+            if (!onProgress) {
+              return;
+            }
+            let percentage: number = 0;
+            if (e.progress) {
+              percentage = Math.round(e.progress * 100);
+            } else {
+              percentage = Math.round((e.loaded * 100) / e.total!);
+            }
+            if (percentage < 100) {
+              onProgress(percentage, file);
+            }
+          },
+        })
+        .then((resp) => {
+          onSuccess?.(resp, file);
+          onChange?.(file);
+        })
+        .catch((err) => {
+          onError?.(err, file);
+          onChange?.(file);
+        });
     },
-    [action, name, data, headers, withCredentials, onProgress]
+    [
+      action,
+      name,
+      data,
+      headers,
+      withCredentials,
+      onProgress,
+      onSuccess,
+      onChange,
+    ]
   );
 
   const uploadFiles = useCallback(
