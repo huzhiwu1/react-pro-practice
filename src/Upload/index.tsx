@@ -15,6 +15,7 @@ export type UploadProps = PropsWithChildren<{
   name?: string; // 后端接收文件的key
   withCredentials?: boolean; // 是否携带cookie
   beforeUpload?: (file: File) => boolean | Promise<File>;
+  onProgress?: (percentage: number, file: File) => void;
 }>;
 
 const Upload: FC<UploadProps> = (props) => {
@@ -28,6 +29,7 @@ const Upload: FC<UploadProps> = (props) => {
     withCredentials,
     children,
     beforeUpload,
+    onProgress,
   } = props;
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -54,9 +56,23 @@ const Upload: FC<UploadProps> = (props) => {
           "Content-Type": "multipart/form-data",
         },
         withCredentials: withCredentials,
+        onUploadProgress: (e) => {
+          if (!onProgress) {
+            return;
+          }
+          let percentage: number = 0;
+          if (e.progress) {
+            percentage = Math.round(e.progress * 100);
+          } else {
+            percentage = Math.round((e.loaded * 100) / e.total!);
+          }
+          if (percentage < 100) {
+            onProgress(percentage, file);
+          }
+        },
       });
     },
-    [action, name, data, headers, withCredentials]
+    [action, name, data, headers, withCredentials, onProgress]
   );
 
   const uploadFiles = useCallback(

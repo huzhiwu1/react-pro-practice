@@ -34,13 +34,17 @@ function App() {
       setTimeout(() => {
         const random = Math.random();
         console.log(random, "random");
-        if (random > 0.5) {
+        if (random > 0.2) {
           resolve(file);
         } else {
           reject("没有权限");
         }
       }, 1000);
     });
+  }, []);
+
+  const onProgress = useCallback((percentage: number, file: File) => {
+    console.log("进度", percentage);
   }, []);
 
   return (
@@ -50,6 +54,7 @@ function App() {
       multiple
       data={{ owner: "胡志武" }}
       beforeUpload={beforeUpload}
+      onProgress={onProgress}
     >
       <Button>上传</Button>
     </Upload>
