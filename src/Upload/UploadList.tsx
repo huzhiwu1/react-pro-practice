@@ -11,6 +11,7 @@ export type UploadFile = {
   name: string;
   size: number;
   uid: string;
+  //   abortController: AbortController; // 用于终止上传请求
   status?: "ready" | "uploading" | "success" | "error";
   percent?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

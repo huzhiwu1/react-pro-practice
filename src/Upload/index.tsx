@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChangeEventHandler, FC, PropsWithChildren } from "react";
 
 import "./index.scss";
 import UploadList, { type UploadFile } from "./UploadList";
+
+export type AbortControllerMap = Map<string, AbortController>;
 
 export type UploadProps = PropsWithChildren<{
   action: string; // 上传文件的地址
@@ -43,6 +45,8 @@ const Upload: FC<UploadProps> = (props) => {
   } = props;
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const abortControllerMapRef = useRef<AbortControllerMap>(new Map());
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const updateUploadFile = useCallback(
@@ -62,6 +66,12 @@ const Upload: FC<UploadProps> = (props) => {
     },
     []
   );
+
+  const stopAllUpload = useCallback(() => {
+    if (abortControllerMapRef.current.size > 0) {
+      abortControllerMapRef.current.forEach((item) => item.abort());
+    }
+  }, []);
 
   const handleInputClick = useCallback(() => {
     if (inputRef.current) {
@@ -83,6 +93,10 @@ const Upload: FC<UploadProps> = (props) => {
         percent: 0,
         raw: file,
       };
+      abortControllerMapRef.current.set(
+        uploadFile["uid"],
+        new AbortController()
+      );
       setFileList((pre) => [uploadFile, ...pre]);
       const formData = new FormData();
       // key是后端拿到二进制文件类的关键字眼
@@ -99,6 +113,7 @@ const Upload: FC<UploadProps> = (props) => {
             ...headers,
             "Content-Type": "multipart/form-data",
           },
+          signal: abortControllerMapRef.current.get(uploadFile.uid)?.signal,
           withCredentials: withCredentials,
           onUploadProgress: (e) => {
             if (!onProgress) {
@@ -126,6 +141,7 @@ const Upload: FC<UploadProps> = (props) => {
             response: resp,
             status: "success",
           });
+          abortControllerMapRef.current.delete(uploadFile.uid);
         })
         .catch((err) => {
           onError?.(err, file);
@@ -134,6 +150,7 @@ const Upload: FC<UploadProps> = (props) => {
             error: err,
             status: "error",
           });
+          abortControllerMapRef.current.delete(uploadFile.uid);
         });
     },
     [
@@ -177,6 +194,11 @@ const Upload: FC<UploadProps> = (props) => {
       setFileList((preState) => {
         return preState.filter((item) => item.uid !== file.uid);
       });
+
+      abortControllerMapRef.current.get(file.uid)?.abort();
+
+      abortControllerMapRef.current.delete(file.uid);
+
       onRemove?.(file);
     },
     [onRemove]
@@ -199,6 +221,13 @@ const Upload: FC<UploadProps> = (props) => {
     },
     [uploadFiles]
   );
+
+  //  组件卸载时清楚所有上传事件
+  useEffect(() => {
+    return () => {
+      stopAllUpload();
+    };
+  }, [stopAllUpload]);
 
   return (
     <div className="upload-component">
