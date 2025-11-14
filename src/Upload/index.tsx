@@ -4,6 +4,7 @@ import type { ChangeEventHandler, FC, PropsWithChildren } from "react";
 
 import "./index.scss";
 import UploadList, { type UploadFile } from "./UploadList";
+import Dragger from "./Dragger";
 
 export type AbortControllerMap = Map<string, AbortController>;
 
@@ -17,6 +18,7 @@ export type UploadProps = PropsWithChildren<{
   multiple?: boolean; // 是否能上传多个文件
   name?: string; // 后端接收文件的key
   withCredentials?: boolean; // 是否携带cookie
+  drag?: boolean;
   beforeUpload?: (file: File) => boolean | Promise<File>;
   onProgress?: (percentage: number, file: File) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,6 +36,7 @@ const Upload: FC<UploadProps> = (props) => {
     accpet,
     multiple,
     name,
+    drag,
     withCredentials,
     children,
     beforeUpload,
@@ -232,7 +235,7 @@ const Upload: FC<UploadProps> = (props) => {
   return (
     <div className="upload-component">
       <div className="upload-input" onClick={handleInputClick}>
-        {children}
+        {drag ? <Dragger onFiles={uploadFiles}>{children}</Dragger> : children}
         <input
           className="upload-file-input"
           type="file"

@@ -56,6 +56,7 @@ function App() {
       data={{ owner: "胡志武" }}
       beforeUpload={beforeUpload}
       onProgress={onProgress}
+      drag
     >
       <Button>上传</Button>
     </Upload>
