@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { ChangeEventHandler, FC, PropsWithChildren } from "react";
 
 import "./index.scss";
+import UploadList, { type UploadFile } from "./UploadList";
 
 export type UploadProps = PropsWithChildren<{
   action: string; // 上传文件的地址
@@ -20,6 +21,7 @@ export type UploadProps = PropsWithChildren<{
   onSuccess?: (data: any, file: File) => void;
   onError?: (error: Error, file: File) => void;
   onChange?: (file: File) => void;
+  onRemove?: (file: UploadFile) => void;
 }>;
 
 const Upload: FC<UploadProps> = (props) => {
@@ -37,8 +39,29 @@ const Upload: FC<UploadProps> = (props) => {
     onSuccess,
     onError,
     onChange,
+    onRemove,
   } = props;
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const updateUploadFile = useCallback(
+    (uploadFiles: UploadFile, updateObj: Partial<UploadFile>) => {
+      setFileList((preState) => {
+        return preState.map((item) => {
+          if (item.uid === uploadFiles.uid) {
+            return {
+              ...item,
+              ...updateObj,
+            };
+          } else {
+            return item;
+          }
+        });
+      });
+    },
+    []
+  );
 
   const handleInputClick = useCallback(() => {
     if (inputRef.current) {
@@ -48,6 +71,19 @@ const Upload: FC<UploadProps> = (props) => {
 
   const post = useCallback(
     (file: File) => {
+      // 用于展示文件的上传进度，状态
+      const uploadFile: UploadFile = {
+        uid:
+          Date.now() +
+          Math.round(Math.random() * 1e4).toString() +
+          "upload-file",
+        name: file.name,
+        size: file.size,
+        status: "ready",
+        percent: 0,
+        raw: file,
+      };
+      setFileList((pre) => [uploadFile, ...pre]);
       const formData = new FormData();
       // key是后端拿到二进制文件类的关键字眼
       formData.append(name || "file", file);
@@ -76,16 +112,28 @@ const Upload: FC<UploadProps> = (props) => {
             }
             if (percentage < 100) {
               onProgress(percentage, file);
+              updateUploadFile(uploadFile, {
+                percent: percentage,
+                status: "uploading",
+              });
             }
           },
         })
         .then((resp) => {
           onSuccess?.(resp, file);
           onChange?.(file);
+          updateUploadFile(uploadFile, {
+            response: resp,
+            status: "success",
+          });
         })
         .catch((err) => {
           onError?.(err, file);
           onChange?.(file);
+          updateUploadFile(uploadFile, {
+            error: err,
+            status: "error",
+          });
         });
     },
     [
@@ -97,6 +145,7 @@ const Upload: FC<UploadProps> = (props) => {
       onProgress,
       onSuccess,
       onChange,
+      updateUploadFile,
     ]
   );
 
@@ -123,6 +172,16 @@ const Upload: FC<UploadProps> = (props) => {
     [post, beforeUpload]
   );
 
+  const handleRemove = useCallback(
+    (file: UploadFile) => {
+      setFileList((preState) => {
+        return preState.filter((item) => item.uid !== file.uid);
+      });
+      onRemove?.(file);
+    },
+    [onRemove]
+  );
+
   const handleFileChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       const files = e.target.files;
@@ -142,16 +201,19 @@ const Upload: FC<UploadProps> = (props) => {
   );
 
   return (
-    <div className="upload-input" onClick={handleInputClick}>
-      {children}
-      <input
-        className="upload-file-input"
-        type="file"
-        ref={inputRef}
-        accept={accpet}
-        multiple={multiple}
-        onChange={handleFileChange}
-      />
+    <div className="upload-component">
+      <div className="upload-input" onClick={handleInputClick}>
+        {children}
+        <input
+          className="upload-file-input"
+          type="file"
+          ref={inputRef}
+          accept={accpet}
+          multiple={multiple}
+          onChange={handleFileChange}
+        />
+      </div>
+      <UploadList fileList={fileList} onRemove={handleRemove} />
     </div>
   );
 };
