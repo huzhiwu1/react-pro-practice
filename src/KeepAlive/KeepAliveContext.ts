@@ -21,12 +21,12 @@ export function isKeepPath(isKeepPath: Array<string | RegExp>, path: string) {
   return false;
 }
 
-export const keepElements: KeepAliveContextType["keepElements"] = {};
+// export const keepElements: KeepAliveContextType["keepElements"] = {};
 
 export const KeepAliveContext = createContext<KeepAliveContextType>({
   keepPaths: [],
-  keepElements: keepElements,
-  dropByPath: (path: string) => {
-    keepElements[path] = null;
-  },
+  keepElements: {},
+  // dropByPath: (path: string) => {
+  //   keepElements[path] = null;
+  // },
 });

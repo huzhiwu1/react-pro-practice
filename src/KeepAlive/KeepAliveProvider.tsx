@@ -1,7 +1,7 @@
 import { KeepAliveContext } from "./KeepAliveContext";
 import type { KeepAliveContextType } from "./KeepAliveContext";
 import type { PropsWithChildren } from "react";
-import { useContext } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export type KeepAliveProviderType = PropsWithChildren<
   Partial<Omit<KeepAliveContextType, "keepPaths">> &
@@ -11,12 +11,19 @@ export type KeepAliveProviderType = PropsWithChildren<
 function KeepAliveProvider(props: KeepAliveProviderType) {
   const { keepPaths, children } = props;
 
-  const { keepElements, dropByPath } = useContext(KeepAliveContext);
+  const [, forceUpdate] = useState({});
+
+  const keepElementsRef = useRef<KeepAliveContextType["keepElements"]>({});
+
+  const dropByPath = useCallback((path: string) => {
+    keepElementsRef.current[path] = null;
+    forceUpdate({});
+  }, []);
 
   return (
     <KeepAliveContext.Provider
       value={{
-        keepElements,
+        keepElements: keepElementsRef.current,
         keepPaths,
         dropByPath,
       }}
