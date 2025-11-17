@@ -36,5 +36,6 @@ import { createRoot } from "react-dom/client";
 // import App from "./Upload/app";
 // import App from "./KeepAlive/app";
 // import App from "./RefactorContext";
-import App from "./ RefactorContext/refactorContext";
+// import App from "./ RefactorContext/refactorContext";
+import App from "./Zustand/zustand-demo.jsx";
 createRoot(document.getElementById("root")!).render(<App />);

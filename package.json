@@ -26,7 +26,8 @@
     "react-router-dom": "^7.9.6",
     "react-transition-group": "^4.4.5",
     "resize-observer-polyfill": "^1.5.1",
-    "sass": "^1.91.0"
+    "sass": "^1.91.0",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
