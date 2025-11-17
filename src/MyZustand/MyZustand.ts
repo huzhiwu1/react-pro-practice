@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 export type StateType<T> = Partial<T> | T;
 
 export type SetStateType<T> = (
@@ -81,3 +83,42 @@ export const createStore = <T>(createState: CreateStateType<T>) => {
   state = createState(setState, getState, api);
   return api;
 };
+
+export type SelectorType<T> = (state: StateType<T>) => StateType<T>;
+/**
+ * 状态变更，触发重新渲染
+ */
+
+function useStore<T>(api: ApiType<T>, selector: SelectorType<T>) {
+  const [, forceUpdate] = useState(Math.random());
+
+  useEffect(() => {
+    api.subscribe((state, oldState) => {
+      const newObj = selector(state);
+      const oldObj = selector(oldState);
+      if (newObj !== oldObj) {
+        forceUpdate(Math.random());
+      }
+    });
+  }, []);
+  return selector(api.getState());
+}
+
+export function create<T>(
+  createState: CreateStateType<T>
+): ApiType<T> & { (selector: SelectorType<T>): StateType<T> } {
+  const api = createStore(createState);
+  const useBoundStore = (selector: SelectorType<T>) => useStore(api, selector);
+
+  /**
+   * 合并函数和对象，
+   * 既可以当函数使用
+   * useBoundStore(selector)
+   * 又可以当对象使用
+   * useBoundStore.getState()
+   */
+  Object.assign(useBoundStore, api);
+  return useBoundStore as ApiType<T> & {
+    (selector: SelectorType<T>): StateType<T>;
+  };
+}
