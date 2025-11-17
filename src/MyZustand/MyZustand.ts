@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 export type StateType<T> = Partial<T> | T;
 
@@ -90,18 +90,11 @@ export type SelectorType<T> = (state: StateType<T>) => StateType<T>;
  */
 
 function useStore<T>(api: ApiType<T>, selector: SelectorType<T>) {
-  const [, forceUpdate] = useState(Math.random());
-
-  useEffect(() => {
-    api.subscribe((state, oldState) => {
-      const newObj = selector(state);
-      const oldObj = selector(oldState);
-      if (newObj !== oldObj) {
-        forceUpdate(Math.random());
-      }
-    });
-  }, []);
-  return selector(api.getState());
+  function getState() {
+    return selector(api.getState());
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return useSyncExternalStore(api.subscribe as any, getState);
 }
 
 export function create<T>(
