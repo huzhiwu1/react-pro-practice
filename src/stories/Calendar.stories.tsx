@@ -4,7 +4,7 @@ import DayJS from "dayjs";
 import Calendar, { type CalendarProps } from "../Calendar";
 
 const meta = {
-  title: "日历组件",
+  title: "Components/日历组件",
   component: Calendar,
   parameters: {
     layout: "centered",

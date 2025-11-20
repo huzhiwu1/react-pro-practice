@@ -3,7 +3,7 @@ import { Button } from "antd";
 import CopyToClipboard from "../CopyToClipboard";
 
 const meta = {
-  title: "复制文本组件",
+  title: "Components/复制文本组件",
   component: CopyToClipboard,
   parameters: {
     layout: "centered",
