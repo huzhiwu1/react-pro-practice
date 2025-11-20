@@ -36,16 +36,18 @@ const CopyToClipboard: FC<CopyToClipboardProps> = function (props) {
   return React.cloneElement<any>(elem, { onClick });
 };
 
-// export default CopyToClipboard;
-function App() {
-  return (
-    <CopyToClipboard
-      text="测试复制文本"
-      onCopy={(text, result) => console.log("onCopy", text, result)}
-    >
-      <p onClick={(event) => console.log(event, "文本子组件")}>复制</p>
-    </CopyToClipboard>
-  );
-}
+// // export default CopyToClipboard;
+// function App() {
+//   return (
+//     <CopyToClipboard
+//       text="测试复制文本"
+//       onCopy={(text, result) => console.log("onCopy", text, result)}
+//     >
+//       <p onClick={(event) => console.log(event, "文本子组件")}>复制</p>
+//     </CopyToClipboard>
+//   );
+// }
 
-export default App;
+// export default App;
+
+export default CopyToClipboard;
