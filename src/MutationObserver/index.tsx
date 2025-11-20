@@ -36,29 +36,29 @@ const MutationObserver: FC<MutationObserverType> = (props) => {
   return React.cloneElement<any>(children, { ref: nodeRef });
 };
 
-// export default MutationObserver;
+export default MutationObserver;
 
-function App() {
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    setInterval(() => {
-      setCount((count) => count + 1);
-    }, 1000);
-  }, []);
-  const onObserver = useCallback<MutationCallback>((mutation) => {
-    console.log(mutation);
-  }, []);
-  return (
-    <MutationObserver onMutate={onObserver}>
-      <>
-        <div className={`father-${count}`}>
-          father
-          <div className={`child-${count}`}>
-            child <div className="count">{count}</div>
-          </div>
-        </div>
-      </>
-    </MutationObserver>
-  );
-}
-export default App;
+// function App() {
+//   const [count, setCount] = useState(0);
+//   useEffect(() => {
+//     setInterval(() => {
+//       setCount((count) => count + 1);
+//     }, 1000);
+//   }, []);
+//   const onObserver = useCallback<MutationCallback>((mutation) => {
+//     console.log(mutation);
+//   }, []);
+//   return (
+//     <MutationObserver onMutate={onObserver}>
+//       <>
+//         <div className={`father-${count}`}>
+//           father
+//           <div className={`child-${count}`}>
+//             child <div className="count">{count}</div>
+//           </div>
+//         </div>
+//       </>
+//     </MutationObserver>
+//   );
+// }
+// export default App;
