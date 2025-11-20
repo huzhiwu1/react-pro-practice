@@ -91,67 +91,69 @@ const LazyLoad: FC<LazyLoadProps> = function (props) {
   );
 };
 
-const LazyComp = React.lazy(() => import("./lazyComDeom"));
+// const LazyComp = React.lazy(() => import("./lazyComDeom"));
 
-function App() {
-  const onImgVisible = useCallback(() => {
-    console.log("出现在视口");
-  }, []);
-  return (
-    <>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <LazyLoad
-        onContentVisible={onImgVisible}
-        // placeholder={<div>测试placeholder</div>}
-      >
-        <img src="https://img1.baidu.com/it/u=2172818577,3783888802&fm=253&app=138&f=JPEG?w=800&h=1422" />
-      </LazyLoad>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      <LazyLoad
-        offset={10}
-        onContentVisible={() => console.log("组件加载完成")}
-      >
-        <LazyComp />
-      </LazyLoad>
-    </>
-  );
-}
+// function App() {
+//   const onImgVisible = useCallback(() => {
+//     console.log("出现在视口");
+//   }, []);
+//   return (
+//     <>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <LazyLoad
+//         onContentVisible={onImgVisible}
+//         // placeholder={<div>测试placeholder</div>}
+//       >
+//         <img src="https://img1.baidu.com/it/u=2172818577,3783888802&fm=253&app=138&f=JPEG?w=800&h=1422" />
+//       </LazyLoad>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       <LazyLoad
+//         offset={10}
+//         onContentVisible={() => console.log("组件加载完成")}
+//       >
+//         <LazyComp />
+//       </LazyLoad>
+//     </>
+//   );
+// }
 
-export default App;
+// export default App;
+
+export default LazyLoad;
