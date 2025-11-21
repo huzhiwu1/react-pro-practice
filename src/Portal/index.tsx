@@ -50,21 +50,23 @@ const Portal = forwardRef<HTMLElement, PropsWithChildren<PortalProps>>(
   }
 );
 
-function App() {
-  const containerRef = useRef<HTMLElement>(null);
-  const [count, setCount] = useState(0);
-  const content = (
-    <button onClick={() => setCount((count) => count + 1)}>按钮{count}</button>
-  );
+// function App() {
+//   const containerRef = useRef<HTMLElement>(null);
+//   const [count, setCount] = useState(0);
+//   const content = (
+//     <button onClick={() => setCount((count) => count + 1)}>按钮{count}</button>
+//   );
 
-  useEffect(() => {
-    console.log(containerRef);
-  }, []);
-  return (
-    <Portal attach={document.body} ref={containerRef}>
-      {content}
-    </Portal>
-  );
-}
+//   useEffect(() => {
+//     console.log(containerRef);
+//   }, []);
+//   return (
+//     <Portal attach={document.body} ref={containerRef}>
+//       {content}
+//     </Portal>
+//   );
+// }
 
-export default App;
+// export default App;
+
+export default Portal;
