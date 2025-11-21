@@ -42,15 +42,17 @@ function useHover(element: HoverableElement) {
   return [hoverableElement, state] as const;
 }
 
-function App() {
-  const content = <div>请把鼠标悬浮在我上面</div>;
-  const [hoverable, hovered] = useHover(content);
-  return (
-    <div>
-      hover组件测试
-      <div>{hoverable}</div>
-      <div>{hovered ? "hover了" : "没有hover"}</div>
-    </div>
-  );
-}
-export default App;
+// function App() {
+//   const content = <div>请把鼠标悬浮在我上面</div>;
+//   const [hoverable, hovered] = useHover(content);
+//   return (
+//     <div>
+//       hover组件测试
+//       <div>{hoverable}</div>
+//       <div>{hovered ? "hover了" : "没有hover"}</div>
+//     </div>
+//   );
+// }
+// export default App;
+
+export default useHover;
