@@ -58,7 +58,7 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
         <div className="space-item" key={key}>
           {item}
         </div>
-        {split && index < flapChildren.length && (
+        {split && index < flapChildren.length - 1 && (
           <span className="space-split">{split}</span>
         )}
       </>
@@ -91,30 +91,32 @@ const Space: FC<PropsWithChildren<SpaceProps>> = (props) => {
     </div>
   );
 };
-function App() {
-  return (
-    <ConfigProvider space={{ size: 30 }}>
-      <Space
-        direction="horizontal"
-        style={{ width: "300px", height: "300px", background: "blue" }}
-        wrap
-        // size={20}
-        split={
-          <div
-            style={{
-              background: "yellow",
-              width: "1px",
-              height: "10px",
-            }}
-          ></div>
-        }
-      >
-        <div style={{ width: "120px", height: "60px", background: "red" }} />
-        <div style={{ width: "120px", height: "60px", background: "red" }} />
-        <div style={{ width: "120px", height: "60px", background: "red" }} />
-      </Space>
-    </ConfigProvider>
-  );
-}
+// function App() {
+//   return (
+//     <ConfigProvider space={{ size: 30 }}>
+//       <Space
+//         direction="horizontal"
+//         style={{ width: "300px", height: "300px", background: "blue" }}
+//         wrap
+//         // size={20}
+//         split={
+//           <div
+//             style={{
+//               background: "yellow",
+//               width: "1px",
+//               height: "10px",
+//             }}
+//           ></div>
+//         }
+//       >
+//         <div style={{ width: "120px", height: "60px", background: "red" }} />
+//         <div style={{ width: "120px", height: "60px", background: "red" }} />
+//         <div style={{ width: "120px", height: "60px", background: "red" }} />
+//       </Space>
+//     </ConfigProvider>
+//   );
+// }
 
-export default App;
+// export default App;
+
+export default Space;
