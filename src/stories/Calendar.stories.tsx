@@ -40,6 +40,13 @@ export const value: Story = {
     value: DayJS(Date.now()),
   },
   render: renderCalendar,
+  parameters: {
+    docs: {
+      description: {
+        story: "value值类型为Dayjs，传入该值用于指定当前的日期是什么",
+      },
+    },
+  },
 };
 
 export const DateRender: Story = {
@@ -51,6 +58,13 @@ export const DateRender: Story = {
     },
   },
   render: renderCalendar,
+  parameters: {
+    docs: {
+      description: {
+        story: "dateRender用于自定义渲染每个日期的单元格",
+      },
+    },
+  },
 };
 
 export const DateInnerContent: Story = {
@@ -65,6 +79,13 @@ export const DateInnerContent: Story = {
     },
   },
   render: renderCalendar,
+  parameters: {
+    docs: {
+      description: {
+        story: "dateInnerContent用于自定义渲染每个日期的单元格除日期外的内容",
+      },
+    },
+  },
 };
 
 export const Locale: Story = {
@@ -74,4 +95,11 @@ export const Locale: Story = {
     locale: "en-US",
   },
   render: renderCalendar,
+  parameters: {
+    docs: {
+      description: {
+        story: "locale指定国际化内容",
+      },
+    },
+  },
 };

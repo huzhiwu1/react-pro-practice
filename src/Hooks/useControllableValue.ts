@@ -74,7 +74,6 @@ function useControllableValue<T>(
       const newValue = isFunction(nextValue)
         ? nextValue(mergedValue)
         : nextValue;
-      console.log(value, "Value");
       // 非受控
       if (!isControlled) {
         setStateValue(newValue);
