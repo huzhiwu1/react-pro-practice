@@ -100,20 +100,22 @@ function useCountDown(options: OptionType) {
   return [timeLeft, formattedRes] as const;
 }
 
-function App() {
-  const currentDate = new Date();
-  const [_, formattedRes] = useCountDown({
-    targetDate: `${currentDate.getFullYear()}-${
-      currentDate.getMonth() + 1
-    }-${currentDate.getDate()} 16:46:38`,
-    // leftTime: 1000 * 3,
-    onEnd: () => console.log("倒计时完成"),
-  });
-  const { days, hours, minutes, seconds, milliseconds } = formattedRes;
-  return (
-    <div>
-      距离年底还剩:{days}日{hours}小时{minutes}分钟{seconds}秒{milliseconds}毫秒
-    </div>
-  );
-}
-export default App;
+// function App() {
+//   const currentDate = new Date();
+//   const [_, formattedRes] = useCountDown({
+//     targetDate: `${currentDate.getFullYear()}-${
+//       currentDate.getMonth() + 1
+//     }-${currentDate.getDate()} 16:46:38`,
+//     // leftTime: 1000 * 3,
+//     onEnd: () => console.log("倒计时完成"),
+//   });
+//   const { days, hours, minutes, seconds, milliseconds } = formattedRes;
+//   return (
+//     <div>
+//       距离年底还剩:{days}日{hours}小时{minutes}分钟{seconds}秒{milliseconds}毫秒
+//     </div>
+//   );
+// }
+// export default App;
+
+export default useCountDown;
