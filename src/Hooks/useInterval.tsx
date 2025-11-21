@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 function useInterval(fn: Function, delay: number) {
   const fnRef = useRef<Function>(fn);
@@ -21,14 +21,16 @@ function useInterval(fn: Function, delay: number) {
   return clear;
 }
 
-function App() {
-  const [count, setCount] = useState(0);
+// function App() {
+//   const [count, setCount] = useState(0);
 
-  useInterval(() => {
-    console.log(count);
-    setCount(count + 1);
-  }, 1000);
-  return <div>{count}</div>;
-}
+//   useInterval(() => {
+//     console.log(count);
+//     setCount(count + 1);
+//   }, 1000);
+//   return <div>{count}</div>;
+// }
 
-export default App;
+// export default App;
+
+export default useInterval;
