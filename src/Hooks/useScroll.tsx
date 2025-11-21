@@ -35,72 +35,74 @@ function useScroll(refObj: React.RefObject<HTMLElement | null>) {
   return isScrolling;
 }
 
-function App() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isScrolling = useScroll(containerRef);
-  return (
-    <>
-      <div>{isScrolling ? "滚动中" : "滚动停止"}</div>
-      <div
-        className="container"
-        ref={containerRef}
-        style={{ height: "200px", overflow: "auto" }}
-      >
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-        <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
-      </div>
-    </>
-  );
-}
+// function App() {
+//   const containerRef = useRef<HTMLDivElement>(null);
+//   const isScrolling = useScroll(containerRef);
+//   return (
+//     <>
+//       <div>{isScrolling ? "滚动中" : "滚动停止"}</div>
+//       <div
+//         className="container"
+//         ref={containerRef}
+//         style={{ height: "200px", overflow: "auto" }}
+//       >
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//         <div style={{ height: "40px", lineHeight: "40px" }}>占位</div>
+//       </div>
+//     </>
+//   );
+// }
 
-export default App;
+// export default App;
+
+export default useScroll;
